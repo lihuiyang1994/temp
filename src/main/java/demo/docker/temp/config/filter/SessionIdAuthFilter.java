@@ -73,6 +73,11 @@ public class SessionIdAuthFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+        String requestURI = request.getRequestURI();
+        if (requestURI.contains("auth/user/register")) {
+            chain.doFilter(request, response);
+            return;
+        }
         if(DEFAULT_ANT_PATH_REQUEST_MATCHER.matches(request)) {
             Authentication authentication = attemptAuthentication(request, response);
             if (authentication != null) {
