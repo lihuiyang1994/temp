@@ -46,6 +46,7 @@ public class LoginHandler {
             String sessionId = uuid.toString().replaceAll("-", "");
             User user = (User) authentication.getPrincipal();
             redisTemplate.boundValueOps(sessionId).set(JSONObject.toJSONString(user.getUsername()));
+
             response.getWriter().write(JSONObject.toJSONString(Result.SUCCESS.sessionId(sessionId)));
         }
 

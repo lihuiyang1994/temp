@@ -55,7 +55,7 @@ public class MessageController {
                 //发送消息
                 messageDto.setContent(dto);
                 template.boundValueOps(tel).expire(1L, TimeUnit.SECONDS);
-                Future<Integer> response = executor.submit(new SMSTask(messageDto, host + ":" + port + "/v2/emp/templateSms/sendSms"));
+                Future<Integer> response = executor.submit(new SMSTask(messageDto, "http://" + host + ":" + port + "/v2/emp/templateSms/sendSms"));
                 Integer status = response.get();
                 if (status!=200) {
                     return ResponseEntity.status(400).body(Result.SERVER_ERROR);
