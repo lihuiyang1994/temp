@@ -99,7 +99,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>lazyboylhy/centos</repository>
+                    <repository>lazyboylhy/for_world</repository>
                     <tag>v1</tag>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>

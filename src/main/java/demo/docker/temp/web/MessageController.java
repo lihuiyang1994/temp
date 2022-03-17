@@ -5,6 +5,7 @@ import demo.docker.temp.dto.MessageContentDto;
 import demo.docker.temp.dto.MessageDto;
 import demo.docker.temp.util.Result;
 import demo.docker.temp.util.SMSTask;
+import demo.docker.temp.util.SMSThreadPoolExecutor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class MessageController {
         this.template = template;
     }
 
-    private  static final ThreadPoolExecutor executor = new ThreadPoolExecutor(15, 30, 1, TimeUnit.MICROSECONDS, new PriorityBlockingQueue<>());
+    private  static final ThreadPoolExecutor executor = new SMSThreadPoolExecutor(15, 30, 1, TimeUnit.MICROSECONDS, new PriorityBlockingQueue<>());
 
 
     @PostMapping("directmessage")
@@ -54,7 +55,7 @@ public class MessageController {
             if (!exist) {
                 //发送消息
                 messageDto.setContent(dto);
-                template.boundValueOps(tel).expire(1L, TimeUnit.SECONDS);
+                template.boundValueOps(tel).set("od",1L, TimeUnit.SECONDS);
                 Future<Integer> response = executor.submit(new SMSTask(messageDto, "http://" + host + ":" + port + "/v2/emp/templateSms/sendSms"));
                 Integer status = response.get();
                 if (status!=200) {
